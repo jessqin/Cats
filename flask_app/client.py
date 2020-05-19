@@ -43,7 +43,7 @@ class CatClient(object):
         search_url = 'search?q=' + search_string
 
         resp = self.sess.get(self.base_url + search_url)
-        
+
         if resp.status_code != 200:
             raise ValueError('Search request failed; make sure your API key is correct and authorized')
 
