@@ -38,14 +38,19 @@ def query_results(query):
         return render_template('query.html', error_msg=results['Error'])
 
     #return str(results)
-    return render_template('query.html', results=results)
+    return render_template('temp.html', results=results)
 
-@app.route('/cats/<cat_id>', methods=['GET', 'POST'])
-def movie_detail(cat_id):
-    result = client.retrieve_cat_by_id(cat_id)
+@app.route('/cats/<cat_name>', methods=['GET', 'POST'])
+def cat_detail(cat_name):
 
-    if type(result) == dict:
-        return render_template('movie_detail.html', error_msg=result['Error'])
+    #temp = client.retrieve_cat_by_id(cat_name)
+    image_result, breed_result = client.retrieve_cat_by_id(cat_name)
+
+    #return str(temp)
+    #return str(image_result)
+
+    #if type(image_result) == dict:
+    #    return render_template('movie_detail.html', error_msg=result['Error'])
 
     form = CatReviewForm()
     if form.validate_on_submit():
@@ -54,7 +59,7 @@ def movie_detail(cat_id):
             content=form.text.data, 
             date=current_time(),
             #########
-            cat_id=cat_id,
+            cat_name=cat_name,
             #movie_title=result.title
         )
 
@@ -62,7 +67,7 @@ def movie_detail(cat_id):
 
         return redirect(request.path)
 
-    reviews_m = Review.objects(imdb_id=movie_id)
+    reviews_m = Review.objects(cat_name=cat_name)
 
     reviews = []
     for r in reviews_m:
@@ -74,7 +79,7 @@ def movie_detail(cat_id):
         })
 
 
-    return render_template('movie_detail.html', form=form, movie=result, reviews=reviews)
+    return render_template('movie_detail.html', form=form, image=image_result[0], cat=breed_result[0], reviews=reviews)
 
 @app.route('/user/<username>')
 def user_detail(username):
