@@ -38,7 +38,7 @@ def query_results(query):
         return render_template('query.html', error_msg=results['Error'])
 
     #return str(results)
-    return render_template('temp.html', results=results)
+    return render_template('query.html', results=results)
 
 @app.route('/cats/<cat_name>', methods=['GET', 'POST'])
 def cat_detail(cat_name):
