@@ -43,7 +43,7 @@ class CatClient(object):
         search_url = 'search?q=' + search_string
 
         resp = self.sess.get(self.base_url + search_url)
-
+        
         if resp.status_code != 200:
             raise ValueError('Search request failed; make sure your API key is correct and authorized')
 
@@ -76,27 +76,38 @@ class CatClient(object):
 
         return result
 
-    def retrieve_cat_by_id(self, cat_id):
+    def retrieve_cat_by_id(self, cat_name):
         """ 
         Use to obtain a Movie object representing the movie identified by
         the supplied imdb_id
         """
-        cat_url = self.base_url + f'search?/breed_ids={cat_id}'
 
-        resp = self.sess.get(cat_url)
+        breedInfo_url = 'search?q=' + cat_name
+        breed_resp = self.sess.get(self.base_url + breedInfo_url)
 
-        if resp.status_code != 200:
-            raise ValueError('Search request failed; make sure your API key is correct and authorized')
+        #if resp.status_code != 200:
+        #    raise ValueError('Search request failed; make sure your API key is correct and authorized')
 
-        data = resp.json()
 
-        if data['Response'] == 'False':
-            print(f'[ERROR]: Error retrieving results: \'{data["Error"]}\' ')
-            return data
+        breed_data = breed_resp.json()
 
-        car = Cat(data, detailed=True)
+        cat_id = breed_data[0]['id']
 
-        return cat
+
+        cat_image_url = 'http://api.thecatapi.com/v1/images/search?/breed_ids=' + cat_id
+        image_resp = self.sess.get(cat_image_url)
+
+        image_data = image_resp.json()
+
+        return image_data, breed_data
+
+        #if data['Response'] == 'False':
+        #    print(f'[ERROR]: Error retrieving results: \'{data["Error"]}\' ')
+        #    return data
+
+        #cat = Cat(data, detailed=True)
+
+        #return cat
 
 
 ## -- Example usage -- ###
