@@ -5,22 +5,27 @@
 <b>{{ error_msg }}</b>
 {% endif %}
 
-{% if movie %}
+{% if cat %}
 
 {# Display card for the movie details #}
 <div class="row">
   <div class="col">
     <div class="card text-center">
       <div class="card-header">
-        {{ movie.title }} ({{ movie.year }})
+        {{ cat.name }}
       </div>
       <div class="card-body">
-        <img src="{{ movie.poster_url }}" class="mr-3 movie" alt="alt text">
+        <img src="{{ image.url }}" class="cat" alt="{{ cat.name }}">
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><b>Directed by:</b> {{ movie.director }}</li>
-          <li class="list-group-item"><b>Actors:</b> {{ movie.actors }}</li>
-          <li class="list-group-item"><b>Genres:</b> {{ movie.genres }}</li>
-          <li class="list-group-item"><b>Awards:</b> {{ movie.awards }}</li>
+          <li class="list-group-item"><b>Origin:</b> {{ cat.origin }}</li>
+          <li class="list-group-item"><b>Affection Level:</b> {{ cat.affection_level }}</li>
+          <li class="list-group-item"><b>Child Friendly:</b> {{ cat.child_friendly }}</li>
+          <li class="list-group-item"><b>Dog Friendly:</b> {{ cat.dog_friendly }}</li>
+          <li class="list-group-item"><b>Energy Level:</b> {{ cat.energy_level }}</li>
+          <li class="list-group-item"><b>Grooming:</b> {{ cat.grooming }}</li>
+          <li class="list-group-item"><b>Hypoallergenic:</b> {{ cat.hypoallergenic }}</li>
+          <li class="list-group-item"><a href={{ cat.wikipedia_url }}><b>Wikipedia</b></a></li>
+          <li class="list-group-item"><a href={{ cat.vetstreet_url }}><b>VetStreet</b></a></li>
         </ul>
       </div>
     </div>
@@ -30,7 +35,7 @@
 {# Reviews #}
 <div class="row">
   <div class="col-md-12">
-    <h1> Reviews <small class="float-right">{{ reviews|length }} reviews</small></h1>
+    <h1> Comments <small class="float-right">{{ reviews|length }} reviews</small></h1>
     <ul class="media-list">
       {% for review in reviews %}
       <li class="media review-item">
