@@ -38,6 +38,10 @@ app.config.update(dict(
 ))
 mail = Mail(app)
 
-client = CatClient(os.environ.get('CAT_API_KEY'))
+from flask_app.features.routes import features
+from flask_app.users.routes import users
+from flask_app.description.routes import description
 
-from . import routes
+app.register_blueprint(users)
+app.register_blueprint(features)
+app.register_blueprint(description)
