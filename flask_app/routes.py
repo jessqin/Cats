@@ -42,10 +42,16 @@ def query_results(query):
 
 @app.route('/cats/<cat_name>', methods=['GET', 'POST'])
 def cat_detail(cat_name):
+    attributes_to_keep = ['affection_level', 'child_friendly', 'dog_friendly', 'energy_level', 'grooming', 'hypoalergenic']
 
     #temp = client.retrieve_cat_by_id(cat_name)
     image_result, breed_result = client.retrieve_cat_by_id(cat_name)
-
+    ratings = dict()
+    for key in breed_result[0].keys():
+        value = str(breed_result[0][key])
+        if value.isdigit() and key in attributes_to_keep:
+            new_key = key.replace('_', ' ').capitalize()
+            ratings[new_key] = (range(int(value)), range(5-int(value)))
     #return str(temp)
     #return str(image_result)
 
@@ -68,7 +74,6 @@ def cat_detail(cat_name):
         return redirect(request.path)
 
     reviews_m = Review.objects(cat_name=cat_name)
-
     reviews = []
     for r in reviews_m:
         reviews.append({
@@ -79,7 +84,7 @@ def cat_detail(cat_name):
         })
 
 
-    return render_template('movie_detail.html', form=form, image=image_result[0], cat=breed_result[0], reviews=reviews)
+    return render_template('movie_detail.html', form=form, image=image_result[0], cat=breed_result[0], ratings=ratings, reviews=reviews)
 
 @app.route('/user/<username>')
 def user_detail(username):
