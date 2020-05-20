@@ -54,19 +54,6 @@ class RegistrationForm(FlaskForm):
         if not (any(ch.isdigit for ch in password.data)):
             raise ValidationError('Password much contain one number')
 
-
-class LoginForm(FlaskForm):
-	username = StringField("Username", validators=[InputRequired()])
-	password = PasswordField("Password", validators=[InputRequired()])
-	submit = SubmitField("Login")
-	token = StringField("Token", validators=[InputRequired(), Length(min=6, max=6)])
-
-	def validate_username(self, username):
-		user = User.objects(username=username.data).first()
-
-		if user is None:
-			raise ValidationError("That username does not exist in our database.")
-
 class UpdateUsernameForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(), Length(min=1, max=40)])
     submit1 = SubmitField('Update Username')
@@ -109,3 +96,21 @@ class ProposePicForm(FlaskForm):
     ])
     breed_name = StringField('Breed')
     submit = SubmitField('Submit')
+
+class LoginForm(FlaskForm):
+    username = StringField("Username", validators=[InputRequired()])
+    password = PasswordField("Password", validators=[InputRequired()])
+    token = StringField('Token', validators=[InputRequired(), Length(min=6, max=6)])
+    submit = SubmitField("Login")
+
+    def validate_token(self, token):
+        user = User.objects(username=self.username.data).first()
+        if user is not None:
+            tok_verified = pyotp.TOTP(user.otp_secret).verify(token.data)
+            if not tok_verified:
+                raise ValidationError("Invalid Token")
+
+    def validate_username(self, username):
+        user = User.objects (username=username.data).first()
+        if user is None:
+            raise ValidationError("That username does not exist in our database.")

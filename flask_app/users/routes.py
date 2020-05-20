@@ -1,6 +1,5 @@
 # 3rd-party packages
-from flask import Blueprint
-from flask import render_template, request, redirect, url_for, flash, Response, send_file
+from flask import render_template, request, redirect, url_for, flash, Response, send_file, Blueprint, session
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from flask_bcrypt import Bcrypt
@@ -8,7 +7,10 @@ from werkzeug.utils import secure_filename
 
 from PIL import Image
 from flask_mail import Message
+from io import BytesIO
 import pyotp
+import qrcode
+import qrcode.image.svg as svg
 
 # stdlib
 import io
@@ -24,7 +26,6 @@ from flask_app.models import User, load_user
 
 
 users = Blueprint('users', __name__)
-session = []
 """ ************ User Management views ************ """
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -42,8 +43,8 @@ def register():
 
         user = User(username=form.username.data, email=form.email.data, password=hashed)
         user.save()
-
-        return redirect(url_for('login'))
+        session['new_username'] = user.username
+        return redirect(url_for('users.tfa'))
 
     return render_template('register.html', title='Register', form=form)
 
@@ -123,12 +124,12 @@ def images(username):
     image = base64.b64encode(bytes_im.getvalue()).decode()
     return image
 
-@app.route("/qr_code")
+@users.route("/qr_code")
 def qr_code():
     if 'new_username' not in session:
         return redirect(url_for('index'))
     
-    user = User.query.filter_by(username=session['new_username']).first()
+    user = User.objects(username=session['new_username']).first()    
     session.pop('new_username')
 
     uri = pyotp.totp.TOTP(user.otp_secret).provisioning_uri(name=user.username, issuer_name='CMSC388J-2FA')
@@ -145,10 +146,10 @@ def qr_code():
 
     return stream.getvalue(), headers
 
-@app.route("/tfa")
+@users.route("/tfa")
 def tfa():
     if 'new_username' not in session:
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
 
     headers = {
         'Cache-Control': 'no-cache, no-store, must-revalidate',

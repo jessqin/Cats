@@ -39,20 +39,15 @@
 
 <div class="row">
     <div class="col">
-        <h1> Proposed Images <small class="float-right">{{ pim.count() }} Proposed Images</small></h1>
+            <h1> Proposed Images <small class="float-right">{{ pim|length }} Proposed Images</small></h1>
         <ul class="media-list">
-            {% for p in pim %}
+            {% for key,value in pim.items() %}
             <li class="media review-item">
                 <div class="media-body">
-                    <span class="float-right">
-                        <small>{{ p.date }}</small>
-                    </span>
-                    <strong>For: <a href="{{ url_for('cat_detail', cat_name=p.cat_name) }}">
-                            {{ p.breed_name }}
-                        </a>
+                    <strong><a href="{{ url_for('cat_detail', cat_name=key) }}">{{ key }}</a>
                     </strong>
                     <p>
-                        <img class="new_pic" src="data:image/png;base64,{{ p.im }}" alt="image">
+                        <img height="100px;" width="100px" src="data:image/png;base64,{{ value }}" alt="image">
                     </p>
                 </div>
             </li>

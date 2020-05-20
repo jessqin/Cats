@@ -14,6 +14,7 @@ from flask_mail import Message
 from datetime import datetime
 import io
 import base64
+import sys
 
 # local
 from flask_app import app, bcrypt, mail
@@ -52,9 +53,6 @@ def cat_detail(cat_name):
     client = CatClient()
     attributes_to_keep = ['affection_level', 'child_friendly', 'dog_friendly', 'energy_level', 'grooming', 'hypoalergenic']
 
-    #temp = client.retrieve_cat_by_id(cat_name)
-    #return str(temp)
-
     image_result, breed_result = client.retrieve_cat_by_id(cat_name)
     ratings = dict()
     for key in breed_result[0].keys():
@@ -68,10 +66,8 @@ def cat_detail(cat_name):
     
     if len(image_result) == 0 or len(breed_result) == 0:
         return render_template('cat_detail.html', error_msg="error")
-    
-    
+
     picform = ProposePicForm()
-    pimages = []
     print(picform.errors)
     if picform.validate_on_submit():
         temp = User.objects(username=current_user.username).first()
@@ -97,13 +93,16 @@ def cat_detail(cat_name):
         pim = CatImage(
             commenter=load_user(current_user.username),
             date = current_time(),
-            im = img,
+            im = None,
             cat_name = cat_name,
         )
         pim.save()
+        pim.im.put(img.stream, content_type='images/png')
+        pim.save()
+
         return redirect(url_for('cat_detail',cat_name=cat_name))
         
-    
+
 
     form = CatReviewForm()
     print(form.text.data)
@@ -139,11 +138,18 @@ def user_detail(username):
     pim = CatImage.objects(commenter=user)
     image = images(username)
 
-    return render_template('user_detail.html', username=username, reviews=reviews, image=image, pim=pim)
+    proposed = {}
+    for p in pim:
+        bytes_im = io.BytesIO(p['im'].read())
+        img = base64.b64encode(bytes_im.getvalue()).decode()
+        print(img)
+        proposed[p['cat_name']] = img
+    print(proposed, file=sys.stdout)
+    return render_template('user_detail.html', username=username, reviews=reviews, image=image, pim=proposed)
 
-# @app.route('/images/<username>.png')
 def images(username):
     user = User.objects(username=username).first()
     bytes_im = io.BytesIO(user.profile_pic.read())
     image = base64.b64encode(bytes_im.getvalue()).decode()
     return image
+
