@@ -8,6 +8,7 @@ from wtforms.validators import (InputRequired, DataRequired, NumberRange, Length
 
 import re
 import sys
+import pyotp
 
 from .models import User
 
@@ -55,20 +56,20 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    username = StringField("Username", validators=[InputRequired()])
-    password = PasswordField("Password", validators=[InputRequired()])
-    submit = SubmitField("Login")
+	username = StringField("Username", validators=[InputRequired()])
+	password = PasswordField("Password", validators=[InputRequired()])
+	submit = SubmitField("Login")
+	token = StringField("Token", validators=[InputRequired(), Length(min=6, max=6)])
 
-    def validate_username(self, username):
-        user = User.objects(username=username.data).first()
+	def validate_username(self, username):
+		user = User.objects(username=username.data).first()
 
-        if user is None:
-            raise ValidationError("That username does not exist in our database.")
-        
+		if user is None:
+			raise ValidationError("That username does not exist in our database.")
 
 class UpdateUsernameForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(), Length(min=1, max=40)])
-    submit = SubmitField('Update Username')
+    submit1 = SubmitField('Update Username')
 
     def validate_username(self, username):
         if username.data != current_user.username:
@@ -76,10 +77,27 @@ class UpdateUsernameForm(FlaskForm):
             if user is not None:
                 raise ValidationError("That username is already taken")
 
+class UpdatePasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[InputRequired()])
+    confirm_password = PasswordField('Confirm Password', 
+                                    validators=[InputRequired(), EqualTo('password')])
+    submit2 = SubmitField('Update Password')
+
+    def validate_password(self, password):
+        if len(password.data) < 8:
+            raise ValidationError('Password much be at least 8 characters long')
+        string_check = re.compile(r'[@_!#$%^&*()<>?/\|}{~:]') 
+        if string_check.search(password.data) == None:
+            raise ValidationError('Password must contain a special character')
+        if not (any(ch.isupper for ch in password.data)):
+            raise ValidationError('Password must contain one capitalized letter')
+        if not (any(ch.isdigit for ch in password.data)):
+            raise ValidationError('Password much contain one number')
+
 
 class UpdateProfilePicForm(FlaskForm):
     propic = FileField('Profile Picture', validators=[
         FileRequired(), 
         FileAllowed(['jpg', 'png'], 'Images Only!')
     ])
-    submit = SubmitField('Update')
+    submit3 = SubmitField('Update')
