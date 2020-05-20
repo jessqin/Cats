@@ -30,8 +30,7 @@ def register():
 
     form = RegistrationForm()
     if form.validate_on_submit():
-        
-        
+
         msg = Message('Thanks for Registering!', sender = 'catwiki388j@gmail.com', recipients = [str(form.email.data)])
         msg.body = "Hi there! Thanks for registering to Cat Wiki!\n\nYour username is: "+str(form.username.data)+"\n\nThank you for using our website, we hope you have an excellent day!"
         mail.send(msg)
