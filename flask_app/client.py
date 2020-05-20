@@ -23,7 +23,7 @@ class Cat(object):
         
 
 class CatClient(object):
-    def __init__(self, api_key):
+    def __init__(self):
         self.sess = requests.Session()
         self.base_url = f'http://api.thecatapi.com/v1/breeds/'
 
@@ -116,10 +116,7 @@ class CatClient(object):
 ## -- Example usage -- ###
 if __name__=='__main__':
     import os
-
-    client = CatClient(os.environ.get('CAT_API_KEY'))
-
-
+    client = CatClient()
     cats = client.search('Bengal')
 
     for cat in cats:

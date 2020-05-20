@@ -23,7 +23,7 @@
                     <span class="float-right">
                         <small>{{ review.date }}</small>
                     </span>
-                    <strong>For: <a href="{{ url_for('movie_detail', movie_id=review.imdb_id) }}">
+                    <strong>For: <a href="{{ url_for('cat_detail', cat_name=review.cat_name) }}">
                             {{ review.movie_title }}
                         </a>
                     </strong>

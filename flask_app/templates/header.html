@@ -14,7 +14,7 @@
                     <a class="nav-link" href="{{ url_for('index') }}">
                         Search
                     </a>
-                </li>
+            </li>
             <li style="color:whitesmoke;" class="nav-item">
                 <a class="nav-link" href="{{ url_for('account') }}">
                     Account
@@ -37,6 +37,11 @@
                 </a>
             </li>
             {% endif %}
+            <li style="color:whitesmoke;" class="nav-item">
+                    <a class="nav-link" href="{{ url_for('site_description') }}">
+                        About
+                    </a>
+            </li>
         </ul>
     </div>
 </nav>
