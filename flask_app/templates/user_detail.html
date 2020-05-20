@@ -36,6 +36,32 @@
         </ul>
     </div>
 </div>
+
+<div class="row">
+    <div class="col">
+        <h1> Proposed Images <small class="float-right">{{ pim.count() }} Proposed Images</small></h1>
+        <ul class="media-list">
+            {% for p in pim %}
+            <li class="media review-item">
+                <div class="media-body">
+                    <span class="float-right">
+                        <small>{{ p.date }}</small>
+                    </span>
+                    <strong>For: <a href="{{ url_for('cat_detail', cat_name=p.cat_name) }}">
+                            {{ p.breed_name }}
+                        </a>
+                    </strong>
+                    <p>
+                        <img class="new_pic" src="data:image/png;base64,{{ p.im }}" alt="image">
+                    </p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+
 <footer class="fixed-bottom align-items-center" >
         <span style="font-size: 20px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;" id="cat-border"></span>
 </footer>
