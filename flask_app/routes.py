@@ -45,6 +45,8 @@ def cat_detail(cat_name):
     attributes_to_keep = ['affection_level', 'child_friendly', 'dog_friendly', 'energy_level', 'grooming', 'hypoalergenic']
 
     #temp = client.retrieve_cat_by_id(cat_name)
+    #return str(temp)
+
     image_result, breed_result = client.retrieve_cat_by_id(cat_name)
     ratings = dict()
     for key in breed_result[0].keys():
@@ -83,7 +85,7 @@ def cat_detail(cat_name):
             'image': images(r.commenter.username)
         })
 
-
+    #return str(image_result[0])
     return render_template('movie_detail.html', form=form, image=image_result[0], cat=breed_result[0], ratings=ratings, reviews=reviews)
 
 @app.route('/user/<username>')

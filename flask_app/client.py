@@ -1,7 +1,7 @@
 import requests
 
 
-class Movie(object):
+class Cat(object):
     def __init__(self, cat_json, detailed=False):
         #if detailed:
         #    self.genres = omdb_json['Genre']
@@ -95,10 +95,12 @@ class CatClient(object):
         cat_id = breed_data[0]['id']
 
 
-        cat_image_url = 'http://api.thecatapi.com/v1/images/search?/breed_ids=' + cat_id
+        cat_image_url = 'https://api.thecatapi.com/v1/images/search?breed_id=' + cat_id
         image_resp = self.sess.get(cat_image_url)
 
         image_data = image_resp.json()
+        
+        #return cat_image_url
 
         return image_data, breed_data
 

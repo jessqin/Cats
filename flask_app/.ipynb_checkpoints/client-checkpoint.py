@@ -1,7 +1,7 @@
 import requests
 
 
-class Movie(object):
+class Cat(object):
     def __init__(self, cat_json, detailed=False):
         #if detailed:
         #    self.genres = omdb_json['Genre']
@@ -40,7 +40,7 @@ class CatClient(object):
         #page = 1
 
         #search_url = f's={search_string}&page={page}'
-        search_url = 'search?q={search_string}'
+        search_url = 'search?q=' + search_string
 
         resp = self.sess.get(self.base_url + search_url)
         
@@ -48,52 +48,69 @@ class CatClient(object):
             raise ValueError('Search request failed; make sure your API key is correct and authorized')
 
         data = resp.json()
-        return (data)
 
-        if data['Response'] == 'False':
-            print(f'[ERROR]: Error retrieving results: \'{data["Error"]}\' ')
-            return data
+        #if data['Response'] == 'False':
+        #    print(f'[ERROR]: Error retrieving results: \'{data["Error"]}\' ')
+        #    return data
 
-        search_results_json = data['Search']
-        remaining_results = int(data['totalResults'])
+        if len(str(data)) == 0:
+            return []
 
-        result = []
+
+        #search_results_json = data['Search']
+        #remaining_results = int(data['totalResults'])
+
+        result = data
 
         ## We may have more results than are first displayed
-        while remaining_results != 0:
-            for item_json in search_results_json:
-                result.append(Movie(item_json))
-                remaining_results -= len(search_results_json)
-            page += 1
-            search_url = f's={search_string}&page={page}'
-            resp = self.sess.get(self.base_url + search_url)
-            if resp.status_code != 200 or resp.json()['Response'] == 'False':
-                break
-            search_results_json = resp.json()['Search']
+        #while remaining_results != 0:
+        #    for item_json in search_results_json:
+        #        result.append(Movie(item_json))
+        #        remaining_results -= len(search_results_json)
+        #    page += 1
+        #    search_url = f's={search_string}&page={page}'
+        #    resp = self.sess.get(self.base_url + search_url)
+        #    if resp.status_code != 200 or resp.json()['Response'] == 'False':
+        #        break
+        #    search_results_json = resp.json()['Search']
 
         return result
 
-    def retrieve_cat_by_id(self, cat_id):
+    def retrieve_cat_by_id(self, cat_name):
         """ 
         Use to obtain a Movie object representing the movie identified by
         the supplied imdb_id
         """
-        cat_url = self.base_url + f'search?/breed_ids={cat_id}'
 
-        resp = self.sess.get(cat_url)
+        breedInfo_url = 'search?q=' + cat_name
+        breed_resp = self.sess.get(self.base_url + breedInfo_url)
 
-        if resp.status_code != 200:
-            raise ValueError('Search request failed; make sure your API key is correct and authorized')
+        #if resp.status_code != 200:
+        #    raise ValueError('Search request failed; make sure your API key is correct and authorized')
 
-        data = resp.json()
 
-        if data['Response'] == 'False':
-            print(f'[ERROR]: Error retrieving results: \'{data["Error"]}\' ')
-            return data
+        breed_data = breed_resp.json()
+        
 
-        car = Cat(data, detailed=True)
+        cat_id = breed_data[0]['id']
 
-        return cat
+
+        cat_image_url = 'https://api.thecatapi.com/v1/images/search?breed_id=' + cat_id
+        image_resp = self.sess.get(cat_image_url)
+
+        image_data = image_resp.json()
+        
+        #return cat_image_url
+
+        return image_data, breed_data
+
+        #if data['Response'] == 'False':
+        #    print(f'[ERROR]: Error retrieving results: \'{data["Error"]}\' ')
+        #    return data
+
+        #cat = Cat(data, detailed=True)
+
+        #return cat
 
 
 ## -- Example usage -- ###
