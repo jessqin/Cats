@@ -26,11 +26,6 @@ movie {
     border-right: 1px #1d1d1d;
 } */
 
-
-h5 {
-    color: pink;  
-}
-
 #cat-border {
     white-space: nowrap;
     text-overflow: ellipsis;

@@ -1,13 +1,18 @@
 {% extends "header.html" %}
 {% block content %}
+<br><br>
 <div class="row">
+    {% if image %}
     <div class="col">
-        <img class="propic" src="data:image/png;base64,{{image}}" alt="image">
+        <img class="propic" src="data:image/png;base64,{{ image }}" alt="image">
     </div>
-    <div class="col">
+    {% endif %}
+    <br><br>
+    <div class="col text-center" style="color:darksalmon">
         <h2>{{ username }}'s Reviews</h2>
     </div>
 </div>
+<br><br>
 <div class="row">
     <div class="col">
         <h1> Reviews <small class="float-right">{{ reviews.count() }} reviews</small></h1>
@@ -31,4 +36,7 @@
         </ul>
     </div>
 </div>
+<footer class="fixed-bottom align-items-center" >
+        <span style="font-size: 20px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;" id="cat-border"></span>
+</footer>
 {% endblock %}
