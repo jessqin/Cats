@@ -126,4 +126,40 @@
 {% endif %}
 <br>
 {% endif %}
+
+{% if current_user.is_authenticated %}
+<div class="row">
+    <div class="col" style="color:darksalmon">
+        <form action="" method="post" enctype="multipart/form-data">
+            {{ picform.csrf_token }}
+            <div class="form-group">
+                {{ picform.new_pic.label(class="form-control-label") }}
+                {{ picform.new_pic(class="form-control form-control-lg") }}
+
+                {% if picform.new_pic.errors %}
+                <div class="alert alert-warning" role="alert">
+                    {% for error in picform.new_pic.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ picform.submit(class="form-control form-control-lg") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="row">
+	<div class="col">
+		<b style = "color: darksalmon;">
+			<a href="{{ url_for('login') }}" style="color:#76D7C4">Login to Propose Your Own Image!</a>
+		</b>
+	</div>
+</div>
+<br>
+<br>
+{% endif %}
+
 {% endblock content %}

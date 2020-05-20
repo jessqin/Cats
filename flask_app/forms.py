@@ -101,3 +101,11 @@ class UpdateProfilePicForm(FlaskForm):
         FileAllowed(['jpg', 'png'], 'Images Only!')
     ])
     submit3 = SubmitField('Update')
+    
+class ProposePicForm(FlaskForm):
+    new_pic = FileField('Propose Picture', validators=[
+        FileRequired(), 
+        FileAllowed(['jpg', 'png'], 'Images Only!')
+    ])
+    breed_name = StringField('Breed')
+    submit = SubmitField('Submit')
