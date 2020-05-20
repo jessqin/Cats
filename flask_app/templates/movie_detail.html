@@ -25,34 +25,32 @@
 	        	</div>
 	        </div>
     </div>
-
-    <div class="col">
-	    <br>
-	      <h6 style="color: darksalmon">Cat Stats ^_^</h6>
-	      {% if ratings %}
-	      <div>
-	        {% for key, value in ratings.items() %}
-	          <div>
-	              <b style = "color: grey;">
-	                {{ key }}:
-	                {% for _ in value.0 %}
-	                  &starf;
-	                {% endfor %}
-	                {% for num in value.1 %}
-	                  &star;
-	                {% endfor %}
-	              </b>
-	          </div>
-	        {% endfor %}
-	      </div>
-	    {% endif %}
-	    <b style = "color: grey;">Origin: {{ cat.origin }}</b>
-	    <br><br>
-
-	  <h6 style="color: darksalmon">More Information</h6>
-	  <p><a  style="color: #76D7C4" href={{ cat.wikipedia_url }}><b>Wikipedia</b></a></p>
-	  <p><a  style="color: #76D7C4" href={{ cat.vetstreet_url }}><b>VetStreet</b></a></p>
-  	</div>
+</div>
+<div class="row text-center">
+  <div class="col">
+    <br>
+      <h6 style="color: darksalmon">Cat Stats ^_^</h6>
+      {% if ratings %}
+      <div>
+        {% for key, value in ratings.items() %}
+          <div>
+              <b style = "color: grey;">
+                {{ key }}:
+                {% for _ in value.0 %}
+                  &starf;
+                {% endfor %}
+                {% for num in value.1 %}
+                  &star;
+                {% endfor %}
+              </b>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <b style = "color: grey;">Origin: {{ cat.origin }}</b>
+    <br><br>
+  </div>
+</div>
 
 </div>
 <br>
