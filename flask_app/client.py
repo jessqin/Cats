@@ -90,6 +90,7 @@ class CatClient(object):
 
 
         breed_data = breed_resp.json()
+        
 
         cat_id = breed_data[0]['id']
 
