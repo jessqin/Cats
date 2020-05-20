@@ -28,11 +28,13 @@ class RegistrationForm(FlaskForm):
     def validate_user(self, username):
         user = User.objects(username=username.data).first()
         if user is not None:
+            #user.delete()
             raise ValidationError('Username is taken')
 
     def validate_email(self, email):        
         user = User.objects(email=email.data).first()
         if user is not None:
+            #user.delete()
             raise ValidationError('Email is taken')
 
 class LoginForm(FlaskForm):
