@@ -7,13 +7,15 @@ from werkzeug.utils import secure_filename
 
 from PIL import Image
 
+from flask_mail import Message
+
 # stdlib
 from datetime import datetime
 import io
 import base64
 
 # local
-from . import app, bcrypt, client
+from . import app, bcrypt, client, mail
 from .forms import (SearchForm, CatReviewForm, RegistrationForm, LoginForm,
                              UpdateUsernameForm, UpdateProfilePicForm)
 from .models import User, Review, load_user
@@ -74,7 +76,9 @@ def cat_detail(cat_name):
             #movie_title=result.title
         )
 
+        
         review.save()
+        
 
         return redirect(request.path)
 
@@ -116,6 +120,12 @@ def register():
 
     form = RegistrationForm()
     if form.validate_on_submit():
+        
+        
+        msg = Message('Thanks for Registering!', sender = 'catwiki388j@gmail.com', recipients = [str(form.email.data)])
+        msg.body = "Hi there! Thanks for registering to Cat Wiki!\n\nYour username is: "+str(form.username.data)+"\n\nThank you for using our website, we hope you have an excellent day!"
+        mail.send(msg)
+        
         hashed = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
 
         user = User(username=form.username.data, email=form.email.data, password=hashed)
@@ -158,8 +168,17 @@ def account():
 
     if username_form.validate_on_submit():
         # current_user.username = username_form.username.data
+        
+        temp = User.objects(username=current_user.username).first()
+        
+        
+        msg = Message('Username Change', sender = 'catwiki388j@gmail.com', recipients = [str(temp.email)])
+        msg.body = "Your username has been updated!\nYour new username is: "+str(username_form.username.data)
+        mail.send(msg)
+        
         current_user.modify(username=username_form.username.data)
         current_user.save()
+        
         return redirect(url_for('account'))
 
     if profile_pic_form.validate_on_submit():
