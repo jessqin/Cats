@@ -9,12 +9,15 @@
     <div class="media">
         <!--<img src="{{ result.poster_url }}" class="mr-3 movie" alt="missing">-->
         <div class="media-body">
-        <h5>&#128049; <a style="color: darksalmon;" href="{{ url_for('cat_detail', cat_name=result.name) }}">{{ result.name }}</a></h5>
 
         {% if result.description|length > 0 %}
+        	<h5>&#128049; <a style="color: darksalmon;" href="{{ url_for('cat_detail', cat_name=result.name) }}">{{ result.name }}</a></h5>
             <p>{{ result.description }}</p>
         {% else %}
-            <p>No description available but still a very cute cat!</p>
+        	<h5>&#128049; <a style="color: #BDC3C7;">{{ result.name }}</a></h5>
+            <p>We don't have much information on this breed, but still a very cute cat!<br>
+            Check back later for updates!</p>
+
         {% endif %}
         </div>
     </div>

@@ -59,6 +59,9 @@ def cat_detail(cat_name):
 
     #if type(image_result) == dict:
     #    return render_template('movie_detail.html', error_msg=result['Error'])
+    
+    if len(image_result) == 0 or len(breed_result) == 0:
+        return render_template('movie_detail.html', error_msg="error")
 
     form = CatReviewForm()
     if form.validate_on_submit():

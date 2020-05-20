@@ -2,7 +2,7 @@
 {% block content %}
 
 {% if error_msg %}
-<b>{{ error_msg }}</b>
+<b></b>
 {% endif %}
 
 {% if cat %}
@@ -12,51 +12,58 @@
   <h2 style="color: darksalmon;" >&#128049; {{ cat.name }} </h2>
 </div>
 
-<div class="row text-center">
+
+<div class="row">
+	<div class="col">
+			<br>
+			<br>
+	        <img width="200px" height="200px" src="{{ image.url }}" class="cat" alt="{{ cat.name }}">
+	        <div class="row">
+	        	<div class ="col-md-12">
+	        		<br>
+	        		<a href='{{ url_for('cat_detail', cat_name=cat.name) }}' ><button>New Image &#128062;</button></a>
+	        	</div>
+	        </div>
+    </div>
+
     <div class="col">
-        <img width="200px" height="200px" src="{{ image.url }}" class="cat" alt="{{ cat.name }}">
-    </div>
-</div>
-<div class="row text-center">
-  <div class="col">
-    <br>
-      <h6 style="color: darksalmon">Cat Stats ^_^</h6>
-      {% if ratings %}
-      <div>
-        {% for key, value in ratings.items() %}
-          <div>
-              <b style = "color: grey;">
-                {{ key }}:
-                {% for _ in value.0 %}
-                  &starf;
-                {% endfor %}
-                {% for num in value.1 %}
-                  &star;
-                {% endfor %}
-              </b>
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-    <b style = "color: grey;">Origin: {{ cat.origin }}</b>
-    <br><br>
-  </div>
+	    <br>
+	      <h6 style="color: darksalmon">Cat Stats ^_^</h6>
+	      {% if ratings %}
+	      <div>
+	        {% for key, value in ratings.items() %}
+	          <div>
+	              <b style = "color: grey;">
+	                {{ key }}:
+	                {% for _ in value.0 %}
+	                  &starf;
+	                {% endfor %}
+	                {% for num in value.1 %}
+	                  &star;
+	                {% endfor %}
+	              </b>
+	          </div>
+	        {% endfor %}
+	      </div>
+	    {% endif %}
+	    <b style = "color: grey;">Origin: {{ cat.origin }}</b>
+	    <br><br>
+
+	  <h6 style="color: darksalmon">More Information</h6>
+	  <p><a  style="color: grey" href={{ cat.wikipedia_url }}><b>Wikipedia</b></a></p>
+	  <p><a  style="color: grey" href={{ cat.vetstreet_url }}><b>VetStreet</b></a></p>
+  	</div>
 
 </div>
+<br>
+<br>
 
-<div class="row text-center">
-  <br>
-  <div class="col">
-      <h6 style="color: darksalmon">More Information</h6>
-      <p><a  style="color: grey" href={{ cat.wikipedia_url }}><b>Wikipedia</b></a></p>
-      <p><a  style="color: grey" href={{ cat.vetstreet_url }}><b>VetStreet</b></a></p>
-    </div>
-</div>
+
 
 {# Reviews #}
 <div class="row">
   <div class="col-md-12">
-    <h1> Comments <small class="float-right">{{ reviews|length }} reviews</small></h1>
+    <h1> Comments <small class="float-right">{{ reviews|length }} Comments</small></h1>
     <ul class="media-list">
       {% for review in reviews %}
       <li class="media review-item">
@@ -101,6 +108,22 @@
     </form>
   </div>
 </div>
+{% else %}
+
+<div class="row">
+	<div class="col">
+		<b style = "color: darksalmon;">
+			Looks like you're not signed in
+			<br>
+		</b>
+		<b style = "color: darksalmon;">
+			<a href="{{ url_for('login') }}" style="color:#76D7C4">Login to comment!</a>
+		</b>
+	</div>
+</div>
+<br>
+<br>
 {% endif %}
+<br>
 {% endif %}
 {% endblock content %}
