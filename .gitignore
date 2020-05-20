@@ -1,5 +1,5 @@
-__pycache__
-flask_app/_pycache
+__pycache__/*
+flask_app/_pycache/*
 *.pyc
 flask_app/*pyc
 .vscode
