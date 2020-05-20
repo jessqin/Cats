@@ -37,7 +37,9 @@ def query_results(query):
 
     if type(results) != list:
 
-        return render_template('query.html', error_msg=results['Error'])
+        return render_template('query.html', error_msg='Error')
+    elif len(results) == 0:
+        return render_template('query.html', error_msg='Error')
 
     #return str(results)
     return render_template('query.html', results=results)
