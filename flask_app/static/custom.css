@@ -33,3 +33,10 @@ a {
 h5 {
     color: pink;  
 }
+
+#cat-border {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 100px;
+}
