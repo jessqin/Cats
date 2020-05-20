@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block header %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="{{ url_for('index') }}">Cat Party!</a>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: darksalmon; color:whitesmoke;">
+    <a style="color:whitesmoke;" class="navbar-brand" href="{{ url_for('index') }}">Cat Party!</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
             {% if current_user.is_authenticated %}
-            <li class="nav-item">
+            <li style="color:whitesmoke;" class="nav-item">
                 <a class="nav-link" href="{{ url_for('account') }}">
                     Account
                 </a>
