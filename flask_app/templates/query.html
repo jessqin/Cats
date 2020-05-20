@@ -3,7 +3,8 @@
 {% if error_msg %}
 <div class="container-fluid">
 	<br>
-	<h3><a style="color: darksalmon;">This breed doesn't exist! Try searching Something Else</a></h3>
+	<h3><a style="color: darksalmon;">We currently don't have information for this breed or it doesn't exist. Try a different breed!</a></h3>
+    <a href={{ url_for('index') }}> Return to search </a>
 </div>
 
 {% endif %}
