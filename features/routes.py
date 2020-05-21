@@ -19,7 +19,7 @@ import json
 
 # local
 
-import features, bcrypt, mail
+import .features, .bcrypt, .mail
 from client import CatClient
 from forms import (SearchForm, CatReviewForm, ProposePicForm)
 from models import User, Review, load_user, CatImage
