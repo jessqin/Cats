@@ -25,7 +25,7 @@ from flask_app.forms import (SearchForm, CatReviewForm, ProposePicForm)
 from flask_app.models import User, Review, load_user, CatImage
 from flask_app.utils import current_time
 
-features = Blueprint('features', __name__, url_prefix='/features')
+features = Blueprint('features', __name__, url_prefix='/')
 """ ************ View functions ************ """
 @features.route('/', methods=['GET', 'POST'])
 def index():
@@ -34,7 +34,7 @@ def index():
     if form.validate_on_submit():
         # return redirect(url_for('query_results', query=form.search_query.data))
         print('FELL INTO VALIDATE FORM', file=sys.stdout)
-        return redirect(url_for('features.index'))
+        return redirect(url_for('features.query_results', query=form.search_query.data))
     return render_template('index.html', form=form)
 
 @features.route('/csp_report')
