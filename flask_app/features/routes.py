@@ -25,7 +25,7 @@ from flask_app.forms import (SearchForm, CatReviewForm, ProposePicForm)
 from flask_app.models import User, Review, load_user, CatImage
 from flask_app.utils import current_time
 
-LoginManager.login_view = 'users.login'
+# LoginManager.login_view = 'users.login'
 
 features = Blueprint('features', __name__, url_prefix='/')
 """ ************ View functions ************ """
@@ -72,7 +72,6 @@ def cat_detail(cat_name):
         return render_template('cat_detail.html', error_msg="error")
 
     picform = ProposePicForm()
-    print(picform.errors)
     if picform.validate_on_submit():
         temp = User.objects(username=current_user.username).first()
         msg = Message('Upload Request', sender = 'catwiki388j@gmail.com', recipients = [str(temp.email)])

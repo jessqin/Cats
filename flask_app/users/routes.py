@@ -62,13 +62,12 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.objects(username=form.username.data).first()
-        print(user.password, file=sys.stdout)
         if user is not None and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             return redirect(url_for('users.account'))
         else:
             flash('Login failed. Check your username and/or password')
-            return redirect(url_for('login'))
+            return redirect(url_for('users.login'))
 
     return render_template('login.html', title='Login', form=form)
 
@@ -178,9 +177,7 @@ def user_detail(username):
     for p in pim:
         bytes_im = io.BytesIO(p['im'].read())
         img = base64.b64encode(bytes_im.getvalue()).decode()
-        print(img)
         proposed[p['cat_name']] = img
-    print(proposed, file=sys.stdout)
     return render_template('user_detail.html', username=username, reviews=reviews, image=image, pim=proposed)
 
 def images(username):

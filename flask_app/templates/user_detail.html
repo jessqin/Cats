@@ -23,8 +23,8 @@
                     <span class="float-right">
                         <small>{{ review.date }}</small>
                     </span>
-                    <strong>For: <a href="{{ url_for('cat_detail', cat_name=review.cat_name) }}">
-                            {{ review.movie_title }}
+                    <strong>For: <a href="{{ url_for('features.cat_detail', cat_name=review.cat_name) }}">
+                            {{ review.cat_name }}
                         </a>
                     </strong>
                     <p>
@@ -44,7 +44,7 @@
             {% for key,value in pim.items() %}
             <li class="media review-item">
                 <div class="media-body">
-                    <strong><a href="{{ url_for('cat_detail', cat_name=key) }}">{{ key }}</a>
+                    <strong><a href="{{ url_for('features.cat_detail', cat_name=key) }}">{{ key }}</a>
                     </strong>
                     <p>
                         <img height="100px;" width="100px" src="data:image/png;base64,{{ value }}" alt="image">
