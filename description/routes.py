@@ -4,7 +4,7 @@ from flask import render_template, request, redirect, url_for, flash, Response, 
 from flask_mongoengine import MongoEngine
 
 # local
-from Cats import description
+import description
 
 description = Blueprint('description', __name__, url_prefix='/')
 """ ************ View functions ************ """
