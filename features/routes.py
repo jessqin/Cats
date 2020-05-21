@@ -19,11 +19,11 @@ import json
 
 # local
 
-from Cats import features, bcrypt, mail
-from Cats.client import CatClient
-from Cats.forms import (SearchForm, CatReviewForm, ProposePicForm)
-from Cats.models import User, Review, load_user, CatImage
-from Cats.utils import current_time
+import features, bcrypt, mail
+from client import CatClient
+from forms import (SearchForm, CatReviewForm, ProposePicForm)
+from models import User, Review, load_user, CatImage
+from utils import current_time
 
 
 features = Blueprint('features', __name__, url_prefix='/')
