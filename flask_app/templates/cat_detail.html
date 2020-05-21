@@ -72,7 +72,7 @@
           <span class="float-right">
             <small>{{ review.date }}</small>
           </span>
-          <a href="{{ url_for('user_detail', username=review.username) }}">
+          <a href="{{ url_for('users.user_detail', username=review.username) }}">
             <strong>@{{ review.username }}</strong>
           </a>
           <p>
@@ -117,7 +117,7 @@
 			<br>
 		</b>
 		<b style = "color: darksalmon;">
-			<a href="{{ url_for('login') }}" style="color:#76D7C4">Login to comment!</a>
+			<a href="{{ url_for('users.login') }}" style="color:#76D7C4">Login to comment!</a>
 		</b>
 	</div>
 </div>
@@ -154,7 +154,7 @@
 <div class="row">
 	<div class="col">
 		<b style = "color: darksalmon;">
-			<a href="{{ url_for('login') }}" style="color:#76D7C4">Login to Propose Your Own Image!</a>
+			<a href="{{ url_for('users.login') }}" style="color:#76D7C4">Login to Propose Your Own Image!</a>
 		</b>
 	</div>
 </div>

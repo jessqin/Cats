@@ -19,22 +19,23 @@ import sys
 from io import BytesIO
 
 # local
-from flask_app import app, bcrypt, client, mail
+
+from flask_app import users, bcrypt, client, mail
 from flask_app.forms import (RegistrationForm, LoginForm,
                              UpdateUsernameForm, UpdateProfilePicForm,
                              UpdatePasswordForm)
-from flask_app.models import User, load_user
+from flask_app.models import User, load_user, Review, CatImage
 
 from flask import session
 
 
-users = Blueprint('users', __name__)
+users = Blueprint('users', __name__, url_prefix='/users')
 
 """ ************ User Management views ************ """
-@app.route('/register', methods=['GET', 'POST'])
+@users.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('features.index'))
 
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -52,10 +53,10 @@ def register():
 
     return render_template('register.html', title='Register', form=form)
 
-@app.route('/login', methods=['GET', 'POST'])
+@users.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('features.index'))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -63,20 +64,20 @@ def login():
         print(user.password, file=sys.stdout)
         if user is not None and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
-            return redirect(url_for('account'))
+            return redirect(url_for('users.account'))
         else:
             flash('Login failed. Check your username and/or password')
             return redirect(url_for('login'))
 
     return render_template('login.html', title='Login', form=form)
 
-@app.route('/logout')
+@users.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('features.index'))
 
-@app.route('/account', methods=['GET', 'POST'])
+@users.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
     username_form = UpdateUsernameForm()
@@ -93,7 +94,7 @@ def account():
         current_user.modify(password=hashed)
         current_user.save()
 
-        return redirect(url_for('account'))
+        return redirect(url_for('users.account'))
 
     if username_form.validate_on_submit():
         temp = User.objects(username=current_user.username).first()
@@ -106,7 +107,7 @@ def account():
         current_user.modify(username=username_form.username.data)
         current_user.save()
 
-        return redirect(url_for('account'))
+        return redirect(url_for('users.account'))
 
     if profile_pic_form.validate_on_submit():
         img = profile_pic_form.propic.data
@@ -118,7 +119,7 @@ def account():
             current_user.profile_pic.replace(img.stream, content_type='images/png')
         current_user.save()
 
-        return redirect(url_for('account'))
+        return redirect(url_for('users.account'))
 
     image = images(current_user.username)
 
@@ -133,7 +134,7 @@ def images(username):
 @users.route("/qr_code")
 def qr_code():
     if 'new_username' not in session:
-        return redirect(url_for('register'))
+        return redirect(url_for('users.register'))
     
     user = User.objects(username=session['new_username']).first()    
     session.pop('new_username')
@@ -155,7 +156,7 @@ def qr_code():
 @users.route("/tfa")
 def tfa():
     if 'new_username' not in session:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('features.index'))
 
     headers = {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -164,3 +165,25 @@ def tfa():
     }
 
     return render_template('tfa.html'), headers
+
+@users.route('/user/<username>')
+def user_detail(username):
+    user = User.objects(username=username).first()
+    reviews = Review.objects(commenter=user)
+    pim = CatImage.objects(commenter=user)
+    image = images(username)
+
+    proposed = {}
+    for p in pim:
+        bytes_im = io.BytesIO(p['im'].read())
+        img = base64.b64encode(bytes_im.getvalue()).decode()
+        print(img)
+        proposed[p['cat_name']] = img
+    print(proposed, file=sys.stdout)
+    return render_template('user_detail.html', username=username, reviews=reviews, image=image, pim=proposed)
+
+def images(username):
+    user = User.objects(username=username).first()
+    bytes_im = io.BytesIO(user.profile_pic.read())
+    image = base64.b64encode(bytes_im.getvalue()).decode()
+    return image

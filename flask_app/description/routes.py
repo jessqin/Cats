@@ -4,10 +4,10 @@ from flask import render_template, request, redirect, url_for, flash, Response, 
 from flask_mongoengine import MongoEngine
 
 # local
-from flask_app import app
+from flask_app import description
 
-description = Blueprint('description', __name__)
+description = Blueprint('description', __name__, url_prefix='/description')
 """ ************ View functions ************ """
-@app.route('/site_description')
+@description.route('/site_description')
 def site_description():
     return render_template('site_description.html')

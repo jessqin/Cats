@@ -4,7 +4,7 @@
 <div class="container-fluid">
 	<br>
 	<h3><a style="color: darksalmon;">We currently don't have information for this breed or it doesn't exist. Try a different breed!</a></h3>
-    <a href={{ url_for('index') }}> Return to search </a>
+    <a href={{ url_for('features.index') }}> Return to search </a>
 </div>
 
 {% endif %}
@@ -17,7 +17,7 @@
         <div class="media-body">
 
         {% if result.description|length > 0 %}
-        	<h5>&#128049; <a style="color: darksalmon;" href="{{ url_for('cat_detail', cat_name=result.name) }}">{{ result.name }}</a></h5>
+        	<h5>&#128049; <a style="color: darksalmon;" href="{{ url_for('features.cat_detail', cat_name=result.name) }}">{{ result.name }}</a></h5>
             <p>{{ result.description }}</p>
         {% else %}
         	<h5>&#128049; <a style="color: #BDC3C7;">{{ result.name }}</a></h5>

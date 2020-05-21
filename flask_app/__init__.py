@@ -5,6 +5,10 @@ from flask_login import LoginManager, current_user, login_user, logout_user, log
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
 from flask_mail import Mail
+from flask_talisman import Talisman
+
+app = Flask(__name__)
+Talisman(app)
 
 # stdlib
 import os
@@ -20,6 +24,27 @@ app = Flask(__name__)
 app.config['MONGODB_HOST'] = 'mongodb://localhost:27017/final'
 #app.config['SECRET_KEY'] = b'\x020;yr\x91\x11\xbe"\x9d\xc1\x14\x91\xadf\xec'
 app.config['SECRET_KEY'] = os.urandom(16)
+
+csp = {
+    'default-src': '*',
+    'img-src': '*',
+    'style-src':
+        ['\'unsafe-inline\' \'self\'',
+        'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'
+        ],
+    'script-src': 
+        ['\'unsafe-inline\' \'self\'',
+            'https://code.jquery.com/jquery-3.4.1.slim.min.js', 
+            'https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js',
+            'https://code.jquery.com/jquery-3.4.1.slim.min.js'        
+        ],
+    "content_security_policy": "style-src 'unsafe-inline'" 
+}
+
+Talisman(app, 
+    content_security_policy=csp,
+    content_security_policy_report_uri='/csp_reports' 
+)
 
 # mongo = PyMongo(app)
 db = MongoEngine(app)

@@ -98,9 +98,9 @@ class UpdatePasswordForm(FlaskForm):
 		string_check = re.compile(r'[@_!#$%^&*()<>?/\|}{~:]') 
 		if string_check.search(new_password.data) == None:
 			raise ValidationError('Password must contain a special character')
-		if not (any(ch.isupper for ch in new_password.data)):
+		if not (any(ch.isupper() for ch in new_password.data)):
 			raise ValidationError('Password must contain one capitalized letter')
-		if not (any(ch.isdigit for ch in new_password.data)):
+		if not (any(ch.isdigit() for ch in new_password.data)):
 			raise ValidationError('Password much contain one number')
 
 
