@@ -1,1 +1,1 @@
-web: gunicorn cat-wiki:__init__
+web: gunicorn {__init__} 
