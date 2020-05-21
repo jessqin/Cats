@@ -29,7 +29,8 @@ from flask_app.models import User, load_user, Review, CatImage
 from flask import session
 
 
-users = Blueprint('users', __name__, url_prefix='/users')
+users = Blueprint('users', __name__, url_prefix='/')
+LoginManager.login_view = 'users.login'
 
 """ ************ User Management views ************ """
 @users.route('/register', methods=['GET', 'POST'])

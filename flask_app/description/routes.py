@@ -6,7 +6,7 @@ from flask_mongoengine import MongoEngine
 # local
 from flask_app import description
 
-description = Blueprint('description', __name__, url_prefix='/description')
+description = Blueprint('description', __name__, url_prefix='/')
 """ ************ View functions ************ """
 @description.route('/site_description')
 def site_description():

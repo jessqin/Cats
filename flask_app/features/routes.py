@@ -25,16 +25,15 @@ from flask_app.forms import (SearchForm, CatReviewForm, ProposePicForm)
 from flask_app.models import User, Review, load_user, CatImage
 from flask_app.utils import current_time
 
-features = Blueprint('features', __name__, url_prefix='/features')
+LoginManager.login_view = 'users.login'
+
+features = Blueprint('features', __name__, url_prefix='/')
 """ ************ View functions ************ """
 @features.route('/', methods=['GET', 'POST'])
 def index():
     form = SearchForm()
-    print('FELL INTO VIEW', file=sys.stdout)
     if form.validate_on_submit():
-        # return redirect(url_for('query_results', query=form.search_query.data))
-        print('FELL INTO VALIDATE FORM', file=sys.stdout)
-        return redirect(url_for('features.index'))
+        return redirect(url_for('features.query_results', query=form.search_query.data))
     return render_template('index.html', form=form)
 
 @features.route('/csp_report')
@@ -110,8 +109,6 @@ def cat_detail(cat_name):
 
 
     form = CatReviewForm()
-    print(form.text.data)
-    print(form.errors)
     if form.validate_on_submit():
         review = Review(
             commenter=load_user(current_user.username), 
@@ -146,9 +143,7 @@ def user_detail(username):
     for p in pim:
         bytes_im = io.BytesIO(p['im'].read())
         img = base64.b64encode(bytes_im.getvalue()).decode()
-        print(img)
         proposed[p['cat_name']] = img
-    print(proposed, file=sys.stdout)
     return render_template('user_detail.html', username=username, reviews=reviews, image=image, pim=proposed)
 
 def images(username):
