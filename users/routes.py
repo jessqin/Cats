@@ -20,11 +20,11 @@ from io import BytesIO
 
 # local
 
-from Cats import users, bcrypt, client, mail
-from Cats.forms import (RegistrationForm, LoginForm,
+from __init__ import users, bcrypt, client, mail
+from forms import (RegistrationForm, LoginForm,
                              UpdateUsernameForm, UpdateProfilePicForm,
                              UpdatePasswordForm)
-from Cats.models import User, load_user, Review, CatImage
+from models import User, load_user, Review, CatImage
 
 from flask import session
 
