@@ -10,7 +10,7 @@ import re
 import sys
 import pyotp
 
-from .models import User
+from models import User
 
 
 class SearchForm(FlaskForm):
