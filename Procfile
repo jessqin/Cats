@@ -1,1 +1,1 @@
-web: gunicorn cat-wiki:__init__
+web: gunicorn src.cat-wiki:flask_app/__init__
