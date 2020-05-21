@@ -23,7 +23,7 @@ import os
 
 app = Flask(__name__)
 #app.config["MONGO_URI"] = "mongodb://heroku_62h2lcbv:hq81vpbtmn5lvg42nu2mbnlcvo@ds163020.mlab.com:63020/heroku_62h2lcbv"
-app.config['MONGODB_HOST'] = 'mongodb://heroku_62h2lcbv:hq81vpbtmn5lvg42nu2mbnlcvo@ds163020.mlab.com:63020/heroku_62h2lcbv'
+app.config['MONGODB_HOST'] = 'mongodb://heroku_62h2lcbv:hq81vpbtmn5lvg42nu2mbnlcvo@ds163020.mlab.com:63020/heroku_62h2lcbv?retryWrites=false'
 #app.config['SECRET_KEY'] = b'\x020;yr\x91\x11\xbe"\x9d\xc1\x14\x91\xadf\xec'
 app.config['SECRET_KEY'] = os.urandom(16)
 
