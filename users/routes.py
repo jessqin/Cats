@@ -20,7 +20,8 @@ from io import BytesIO
 
 # local
 
-from __init__ import users, bcrypt, client, mail
+import users, client
+from __init__ import bcrypt, mail
 from forms import (RegistrationForm, LoginForm,
                              UpdateUsernameForm, UpdateProfilePicForm,
                              UpdatePasswordForm)
