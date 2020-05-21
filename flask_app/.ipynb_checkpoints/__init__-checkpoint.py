@@ -10,8 +10,6 @@ from flask_talisman import Talisman
 app = Flask(__name__)
 Talisman(app)
 
-import sys
-
 # stdlib
 import os
 from datetime import datetime
@@ -55,7 +53,7 @@ Talisman(app,
 # mongo = PyMongo(app)
 db = MongoEngine(app)
 login_manager = LoginManager(app)
-LoginManager.login_view = 'users.login'
+login_manager.login_view = 'login'
 bcrypt = Bcrypt(app)
 
 app.config.update(dict(
@@ -69,10 +67,9 @@ app.config.update(dict(
 ))
 mail = Mail(app)
 
-
-from .features.routes import features
-from .users.routes import users
-from .description.routes import description
+from flask_app.features.routes import features
+from flask_app.users.routes import users
+from flask_app.description.routes import description
 
 app.register_blueprint(users)
 app.register_blueprint(features)
